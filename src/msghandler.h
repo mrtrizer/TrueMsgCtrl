@@ -7,7 +7,8 @@
 class AbstractMsgHandler
 {
 public:
-    virtual bool isValidCmd(char * data, unsigned int size) const = 0;
+    virtual bool isValidCmd(const char * data, unsigned int size) const = 0;
+    virtual int procCmd(const char *data, unsigned int size) = 0;
     virtual ~AbstractMsgHandler(){}
 };
 
@@ -19,16 +20,17 @@ public:
 
     MsgHandler(MsgProcFuc msgProcFunc):msgProcFunc(msgProcFunc){}
     ~MsgHandler(){}
-    bool isValidCmd(char *data, unsigned int size) const
+    bool isValidCmd(const char *data, unsigned int size) const
     {
         assert(size > 0);
         return (data[0] == MsgType::getCode()) && (size == MsgType::getSize());
     }
-    MsgRespType procCmd(char *data, unsigned int size)
+    int procCmd(const char *data, unsigned int size)
     {
-        msgProcFunc(data, (char*)&resp);
-        return resp;
+        return msgProcFunc(data, (char*)&resp);
     }
+    inline MsgRespType getResp(){return resp;}
+
 private:
     MsgProcFuc msgProcFunc;
     MsgRespType resp;
