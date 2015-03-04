@@ -14,8 +14,11 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
+INCLUDEPATH += "../src/"
+
 SOURCES += main.cpp
 
 HEADERS += \
     ../src/msgtemplates.h \
-    ../src/msghandler.h
+    ../src/msghandler.h \
+    ../src/msgcontainer.h

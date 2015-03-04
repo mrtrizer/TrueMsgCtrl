@@ -3,6 +3,7 @@
 #include <QByteArray>
 #include "msgtemplates.h"
 #include "msghandler.h"
+#include "msgcontainer.h"
 
 MSG_TYPE_2(Test,1,unsigned int, a, 0, unsigned int, b, 0)
 MSG_TYPE_1(TestResp,2,unsigned int, a, 0)
@@ -26,7 +27,9 @@ int main(int argc, char *argv[])
 
     TestResp c;
 
-    if (handler.isValidCmd(b.getData(),b.getSize()))
+    MsgContainer<Test> container(b);
+
+    if (handler.isValidCmd(container.getData(),container.getSize()))
     {
         c = handler.procCmd(b.getData(),b.getSize());
         qDebug() << QByteArray(c.getData(),c.getSize()).toHex();
