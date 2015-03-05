@@ -9,14 +9,15 @@ class AbstractMsgHandler
 public:
     virtual bool isValidCmd(const char * data, unsigned int size) const = 0;
     virtual int procCmd(const char *data, unsigned int size) = 0;
+    virtual AbstractMsgHandler * newCopy() = 0;
     virtual ~AbstractMsgHandler(){}
 };
 
 template <class MsgType, class MsgRespType>
-class MsgHandler:AbstractMsgHandler
+class MsgHandler:public AbstractMsgHandler
 {
 public:
-    typedef int (*MsgProcFuc)(char * data, char * resp);
+    typedef int (*MsgProcFuc)(const char * data, char * resp);
 
     MsgHandler(MsgProcFuc msgProcFunc):msgProcFunc(msgProcFunc){}
     ~MsgHandler(){}
@@ -27,9 +28,11 @@ public:
     }
     int procCmd(const char *data, unsigned int size)
     {
+        assert(size == MsgType::getSize());
         return msgProcFunc(data, (char*)&resp);
     }
     inline MsgRespType getResp(){return resp;}
+    AbstractMsgHandler * newCopy() {return new MsgHandler<MsgType, MsgRespType>(*this);}
 
 private:
     MsgProcFuc msgProcFunc;

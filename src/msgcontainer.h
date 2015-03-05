@@ -6,7 +6,7 @@
 class AbstractMsgContainer
 {
 public:
-    AbstractMsgContainer(AbstractMsgHandler * respHandler):respHandler(respHandler){}
+    AbstractMsgContainer(AbstractMsgHandler * respHandler):respHandler(respHandler->newCopy()){}
     virtual ~AbstractMsgContainer(){}
     virtual char * getData() = 0;
     virtual unsigned int getSize() = 0;
@@ -22,11 +22,11 @@ private:
 };
 
 template <class MsgType>
-class MsgContainer:AbstractMsgContainer
+class MsgContainer:public AbstractMsgContainer
 {
 public:
 
-    MsgContainer(MsgType msg, AbstractMsgHandler * respHandler):msg(msg){}
+    MsgContainer(MsgType msg, AbstractMsgHandler * respHandler):AbstractMsgContainer(respHandler), msg(msg){}
     ~MsgContainer(){}
     char * getData() {return msg.getData();}
     unsigned int getSize() {return msg.getSize();}
