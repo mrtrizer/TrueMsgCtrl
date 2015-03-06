@@ -43,8 +43,9 @@ int main(int argc, char *argv[])
     if (handler.isValidCmd(container.getData(),container.getSize()))
     {
         handler.procCmd(b.getData(),b.getSize());
-        c = handler.getResp();
-        qDebug() << "Resp: "<< QByteArray(c.getData(),c.getSize()).toHex();
+        char * respData = handler.getRespData();
+        unsigned int respLen = handler.getRespLen();
+        qDebug() << "Resp: "<< QByteArray(respData,respLen).toHex();
     }
 
     container.procResp(c.getData(),c.getSize());

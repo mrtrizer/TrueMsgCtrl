@@ -9,7 +9,11 @@ class AbstractMsgHandler
 public:
     virtual bool isValidCmd(const char * data, unsigned int size) const = 0;
     virtual int procCmd(const char *data, unsigned int size) = 0;
+    virtual char * getRespData() = 0;
+    virtual unsigned int getRespLen() = 0;
+
     virtual AbstractMsgHandler * newCopy() = 0;
+
     virtual ~AbstractMsgHandler(){}
 };
 
@@ -31,7 +35,8 @@ public:
         assert(size == MsgType::getSize());
         return msgProcFunc(data, (char*)&resp);
     }
-    inline MsgRespType getResp(){return resp;}
+    char * getRespData(){return (char *)&resp;}
+    unsigned int getRespLen(){return sizeof(resp);}
     AbstractMsgHandler * newCopy() {return new MsgHandler<MsgType, MsgRespType>(*this);}
 
 private:
