@@ -17,6 +17,8 @@ public:
             respHandler->procCmd(data,size);
     }
 
+    AbstractMsgHandler * getRespHandler(){return respHandler;}
+
 private:
     AbstractMsgHandler * respHandler;
 };
