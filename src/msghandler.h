@@ -12,7 +12,7 @@ public:
     virtual char * getRespData() = 0;
     virtual unsigned int getRespLen() = 0;
 
-    virtual AbstractMsgHandler * newCopy() = 0;
+    virtual AbstractMsgHandler * newCopy() const = 0;
 
     virtual ~AbstractMsgHandler(){}
 };
@@ -37,11 +37,13 @@ public:
     }
     char * getRespData(){return (char *)&resp;}
     unsigned int getRespLen(){return sizeof(resp);}
-    AbstractMsgHandler * newCopy() {return new MsgHandler<MsgType, MsgRespType>(*this);}
+    AbstractMsgHandler * newCopy() const {return new MsgHandler<MsgType, MsgRespType>(*this);}
 
 private:
     MsgProcFuc msgProcFunc;
     MsgRespType resp;
 };
+
+#define MSG_HANDLER(in,out,respProc) MsgHandler<in, out>(respProc)
 
 #endif // MSGHANDLER_H

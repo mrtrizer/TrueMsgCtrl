@@ -6,7 +6,7 @@
 class AbstractMsgContainer
 {
 public:
-    AbstractMsgContainer(AbstractMsgHandler * respHandler):respHandler(respHandler->newCopy()){}
+    AbstractMsgContainer(const AbstractMsgHandler & respHandler):respHandler(respHandler.newCopy()){}
     virtual ~AbstractMsgContainer(){}
     virtual char * getData() = 0;
     virtual unsigned int getSize() = 0;
@@ -28,7 +28,7 @@ class MsgContainer:public AbstractMsgContainer
 {
 public:
 
-    MsgContainer(MsgType msg, AbstractMsgHandler * respHandler):AbstractMsgContainer(respHandler), msg(msg){}
+    MsgContainer(MsgType msg, const AbstractMsgHandler & respHandler):AbstractMsgContainer(respHandler), msg(msg){}
     ~MsgContainer(){}
     char * getData() {return msg.getData();}
     unsigned int getSize() {return msg.getSize();}
@@ -38,6 +38,9 @@ public:
 private:
     MsgType msg;
 };
+
+#define MSG(type,proc,...) MsgContainer<type>(type(__VA_ARGS__),proc)
+#define MSG_A(type,respProc,stat,...) MSG(type##Req, (MsgHandler<type##Resp,stat>(respProc)),__VA_ARGS__)
 
 #endif // MSGCONTAINER
 
