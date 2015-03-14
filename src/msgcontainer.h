@@ -40,7 +40,6 @@ private:
 };
 
 #define MSG(type,proc,...) MsgContainer<type>(type(__VA_ARGS__),proc)
-#define MSG_A(type,respProc,stat,...) MSG(type##Req, (MsgHandler<type##Resp,stat>(respProc)),__VA_ARGS__)
 
 #endif // MSGCONTAINER
 
