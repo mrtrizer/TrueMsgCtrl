@@ -9,7 +9,8 @@ public:
     AbstractMsgContainer(const AbstractMsgHandler & respHandler):respHandler(respHandler.newCopy()){}
     virtual ~AbstractMsgContainer(){}
     virtual char * getData() = 0;
-    virtual unsigned int getSize() = 0;
+    virtual unsigned int getSize() const = 0;
+    virtual uint8_t getType() const = 0;
     virtual AbstractMsgContainer * newCopy() const = 0;
     void procResp(const char * data, unsigned int size)
     {
@@ -31,7 +32,8 @@ public:
     MsgContainer(MsgType msg, const AbstractMsgHandler & respHandler):AbstractMsgContainer(respHandler), msg(msg){}
     ~MsgContainer(){}
     char * getData() {return msg.getData();}
-    unsigned int getSize() {return msg.getSize();}
+    unsigned int getSize() const {return msg.getSize();}
+    uint8_t getType() const {return msg.type;}
 
     AbstractMsgContainer * newCopy() const {return new MsgContainer(*this);}
 
