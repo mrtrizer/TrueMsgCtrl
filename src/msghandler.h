@@ -25,7 +25,6 @@ public:
     typedef int (*MsgProcFuncNC)(const char * data, char * resp);
 
     MsgHandler(MsgProcFunc msgProcFunc, const Context & context):msgProcFunc((void*)msgProcFunc),context(context),needContext(true){}
-    MsgHandler(MsgProcFuncNC msgProcFunc, const Context & context):msgProcFunc((void*)msgProcFunc),context(context),needContext(false){}
     MsgHandler(MsgProcFuncNC msgProcFunc):msgProcFunc((void*)msgProcFunc),context(0),needContext(false){}
     ~MsgHandler(){}
     bool isValidCmd(const char *data, unsigned int size) const
