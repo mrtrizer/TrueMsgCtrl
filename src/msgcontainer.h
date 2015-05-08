@@ -7,7 +7,8 @@ class AbstractMsgContainer
 {
 public:
     AbstractMsgContainer(const AbstractMsgHandler & respHandler):respHandler(respHandler.newCopy()){}
-    virtual ~AbstractMsgContainer(){}
+    AbstractMsgContainer(const AbstractMsgContainer & instance){this->respHandler = instance.respHandler->newCopy();}
+    virtual ~AbstractMsgContainer(){delete respHandler;}
     virtual char * getData() = 0;
     virtual unsigned int getSize() const = 0;
     virtual uint8_t getType() const = 0;
@@ -35,7 +36,7 @@ public:
     unsigned int getSize() const {return msg.getSize();}
     uint8_t getType() const {return msg.type;}
 
-    AbstractMsgContainer * newCopy() const {return new MsgContainer(*this);}
+    AbstractMsgContainer * newCopy() const {return new MsgContainer<MsgType>(*this);}
 
 private:
     MsgType msg;
