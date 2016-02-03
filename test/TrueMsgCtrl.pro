@@ -9,7 +9,7 @@ QT       += core
 QT       -= gui
 
 TARGET = TrueMsgCtrl
-CONFIG   += console
+CONFIG   += console C++11
 CONFIG   -= app_bundle
 
 TEMPLATE = app

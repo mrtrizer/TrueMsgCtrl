@@ -25,7 +25,7 @@ public:
     typedef int (*MsgProcFuncNC)(const char * data, char * resp);
 
     MsgHandler(MsgProcFunc msgProcFunc, const Context & context):msgProcFunc((void*)msgProcFunc),context(context),needContext(true){}
-    MsgHandler(MsgProcFuncNC msgProcFunc):msgProcFunc((void*)msgProcFunc),context(0),needContext(false){}
+    MsgHandler(MsgProcFuncNC msgProcFunc):msgProcFunc((void*)msgProcFunc),needContext(false){}
     ~MsgHandler(){}
     bool isValidCmd(const char *data, unsigned int size) const
     {
@@ -40,6 +40,7 @@ public:
         else
             return ((MsgProcFuncNC)msgProcFunc)(data, (char*)&resp);
     }
+    MsgRespType getResp(){return resp;}
     char * getRespData(){return (char *)&resp;}
     unsigned int getRespLen(){return sizeof(resp);}
     AbstractMsgHandler * newCopy() const {return new MsgHandler<MsgType, MsgRespType, Context>(*this);}
