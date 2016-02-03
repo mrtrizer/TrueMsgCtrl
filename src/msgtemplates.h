@@ -3,6 +3,21 @@
 
 #include <inttypes.h>
 
+///New MsgType class
+template <class T, int MSG_TYPE>
+class __attribute__((packed)) MsgType {
+public:
+    MsgType(const T & data):type(MSG_TYPE),data(data){}
+    int type;
+    T data;
+    char * getData(){return (char *)this;}
+    static unsigned int getSize(){return sizeof(MsgType<T,MSG_TYPE>);}
+    static inline unsigned char getCode(){return MSG_TYPE;}
+};
+#define MSG_TYPE(msg_name,number,data) \
+struct __attribute__((packed)) msg_name ## _T data ; \
+typedef MsgType< msg_name ## _T, number> msg_name;
+
 #define MSG_START(name)\
     class __attribute__((packed)) name\
     {\
