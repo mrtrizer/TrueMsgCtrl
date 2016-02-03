@@ -8,6 +8,7 @@ template <class T, int MSG_TYPE>
 class __attribute__((packed)) MsgType {
 public:
     MsgType(const T & data):type(MSG_TYPE),data(data){}
+    MsgType():type(MSG_TYPE){}
     int type;
     T data;
     char * getData(){return (char *)this;}
