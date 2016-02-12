@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     //согласившимуся обработчику. После этого будет вызвана функция обработки.
     //Эту проверку (4) можно выполнять в цикле для обработчиков всех типов команд.
     //Проверяется соответствие длины команды и формата.
-    if (handler.isValidCmd(container.getData(),container.getSize())) //(4)
+    if (handler.isValidCmd(request.getData(),request.getSize())) //(4)
     {
         //Обработка данных, ответ и его длинну можно прочитать из методов getRespData() (2) и getRespLen() (3)
         handler.procCmd(request.getData(),request.getSize());
