@@ -12,23 +12,29 @@ public:
     }
 
     template <class MsgType, class MsgRespType, typename Context>
-    MsgHandler<MsgType,MsgRespType,Context>* createHandler(MsgProcFuncNC msgProcFunc)
+    MsgHandler<MsgType,MsgRespType,Context>* createHandler(MsgProcFuncNC msgProcFunc, bool setId = true)
     {
-        auto handler = MsgHandler<MsgType,MsgRespType,Context>(msgProcFunc);
+        auto handler =new MsgHandler<MsgType,MsgRespType,Context>(msgProcFunc);
         handler->setIdSize(idSize);
-        handler->setId((char*)msgId);
-        msgId++;
+        if(setId)
+        {
+            handler->setId((char*)msgId);
+            msgId++;
+        }
         return handler;
     }
 
     template <class MsgType, class MsgRespType, typename Context>
     MsgHandler<MsgType,MsgRespType,Context>* createHandler(
-            int (*msgProcFunc)(const char*,char*, const Context)&, const Context & context)
+            int (*msgProcFunc)(const char*,char*, const Context)&, const Context & context, bool setId = true)
     {
         auto handler = MsgHandler<MsgType,MsgRespType,Context>(msgProcFunc,context);
         handler->setIdSize(idSize);
-        handler->setId((char*)msgId);
-        msgId++;
+        if(setId)
+        {
+            handler->setId((char*)msgId);
+            msgId++;
+        }
         return handler;
     }
 
