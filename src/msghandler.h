@@ -58,7 +58,12 @@ public:
     int procCmd(const char *data, unsigned int size)
     {
         assert(size == MsgType::getSize());
-        data+=idSize;
+        if(idSize)
+        {
+            id = realloc(id,idSize);
+            memcpy(id,data,idSize);
+            data+=idSize;
+        }
         if (needContext)
             return ((MsgProcFunc)msgProcFunc)(data, (char*)&resp, context);
         else
