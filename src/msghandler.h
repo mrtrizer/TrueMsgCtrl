@@ -60,7 +60,7 @@ public:
         assert(size == MsgType::getSize());
         if(idSize)
         {
-            id = realloc(id,idSize);
+            id = (char*)realloc(id,idSize);
             memcpy(id,data,idSize);
             data+=idSize;
         }
