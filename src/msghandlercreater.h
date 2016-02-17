@@ -18,7 +18,7 @@ public:
         handler->setIdSize(idSize);
         if(setId)
         {
-            handler->setId((char*)msgId);
+            handler->setId((char*)&msgId);
             msgId++;
         }
         return handler;

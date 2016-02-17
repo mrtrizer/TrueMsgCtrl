@@ -28,6 +28,7 @@ public:
 
     virtual ~AbstractMsgHandler(){}
     void setIdSize(unsigned int idSize){this->idSize = idSize;}
+    const char* getId()const{return id;}
 protected:
     char* id = nullptr;
     unsigned int idSize = 0;
