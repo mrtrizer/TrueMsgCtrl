@@ -61,7 +61,7 @@ public:
         assert(size > 0);
         data+=idSize;
         return (data[0] == MsgType::getCode()) && (size == MsgType::getSize()) &&
-                (!idSize || !id || (idSize && memcmp(data-idSize,this->id,idSize) == 0));
+                (!idSize || id == 0 || (idSize && memcmp(data-idSize,this->id,idSize) == 0));
     }
     int procCmd(const char *data, unsigned int size)
     {
