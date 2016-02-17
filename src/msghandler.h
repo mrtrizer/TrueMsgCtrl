@@ -19,7 +19,7 @@ public:
     void setId(const char* idSrc)
     {
         assert(idSize);
-        if(!nullptr)
+        if(!id)
             id = (char*)realloc(id,idSize);
         memcpy(id,idSrc,idSize);
     }
@@ -46,9 +46,15 @@ public:
     ~MsgHandler()
     {
         if(id)
+        {
             free(id);
+            id = nullptr;
+        }
         if(respData)
+        {
             free(respData);
+            respData = nullptr;
+        }
     }
     bool isValidCmd(const char *data, unsigned int size) const
     {
