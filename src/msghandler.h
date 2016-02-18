@@ -60,12 +60,12 @@ public:
     {
         assert(size > 0);
         data+=idSize;
-        return (data[0] == MsgType::getCode()) && (size == MsgType::getSize()) &&
+        return (data[0] == MsgType::getCode()) && (size == MsgType::getSizeS()) &&
                 (!idSize || id == 0 || (idSize && memcmp(data-idSize,this->id,idSize) == 0));
     }
     int procCmd(const char *data, unsigned int size)
     {
-        assert(size == MsgType::getSize());
+        assert(size == MsgType::getSizeS());
         if(idSize)
         {
             id = (char*)realloc(id,idSize);

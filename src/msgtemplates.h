@@ -3,16 +3,25 @@
 
 #include <inttypes.h>
 
+class AMsgType
+{
+public:
+    AMsgType(){}
+    virtual char* getData() = 0;
+    virtual unsigned int getSize() const= 0;
+};
+
 ///New MsgType class
 template <class T, int MSG_TYPE>
-class __attribute__((packed)) MsgType {
+class __attribute__((packed)) MsgType : public AMsgType {
 public:
     MsgType(const T & data):type(MSG_TYPE),data(data){}
     MsgType():type(MSG_TYPE){}
     int type;
     T data;
     char * getData(){return (char *)this;}
-    static unsigned int getSize(){return sizeof(MsgType<T,MSG_TYPE>);}
+    virtual unsigned int getSize() const override{return getSizeS();}
+    static unsigned int getSizeS(){return sizeof(MsgType<T,MSG_TYPE>);}
     static inline unsigned char getCode(){return MSG_TYPE;}
 };
 #define MSG_TYPE(msg_name,number,data) \

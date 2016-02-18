@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     {
         //Обработка данных, ответ и его длинну можно прочитать из методов getRespData() (2) и getRespLen() (3)
         handler.procCmd(request.getData(),request.getSize());
-        char * respData = handler.getRespData(); //(2)
+        char * respData = handler.getRespData(); //(2)        
         unsigned int respLen = handler.getRespLen(); //(3)
         cout << "Response: "<< hexDump(respData,respLen) << endl;
     }
