@@ -59,9 +59,7 @@ public:
     bool isValidCmd(const char *data, unsigned int size) const
     {
         assert(size > 0);
-        data+=idSize;
-        return (data[0] == MsgType::getCode()) && (size == MsgType::getSizeS()) &&
-                (!idSize || id == 0 || (idSize && memcmp(data-idSize,this->id,idSize) == 0));
+        return (data[0] == MsgType::getCode()) && (size == MsgType::getSizeS()) ;
     }
     int procCmd(const char *data, unsigned int size)
     {

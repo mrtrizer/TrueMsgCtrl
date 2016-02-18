@@ -33,12 +33,19 @@ public:
     }
     const char* getRespData()
     {
-        if(reqData) return reqData;
-        return resp->getData();
+        if(resp)
+            return resp->getData();
+        if(respData)
+            return respData + idSize;
+        assert(false);
     }
     const char* getReqData()
     {
-        return req->getData();
+        if(req)
+            return req->getData();
+        if(reqData)
+            return reqData + idSize;
+        assert(false);
     }
 
     const char* getReqDataWithId()
@@ -47,13 +54,14 @@ public:
     }
 
 
-    void setId(const char* data)
+    const char* setId(const char* data)
     {
         if(idSize)
         {
             id = (char*)realloc(id,idSize);
             memcpy(id,data,idSize);
         }
+        return data+idSize;
     }
     bool checkId(char* id)
     {
