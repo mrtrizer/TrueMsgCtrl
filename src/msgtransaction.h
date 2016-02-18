@@ -63,13 +63,13 @@ public:
     void setReq(AMsgType *value){req = value;}
 
     void setResp(AMsgType *value){resp = value;}
-    void setReq(char *value, unsigned int size)
+    void setReq(const char *value, unsigned int size)
     {
         setData(value,reqData,size);
         reqDataSize = size +idSize;
     }
 
-    void setResp(char *value, unsigned int size)
+    void setResp(const char *value, unsigned int size)
     {
         setData(value,respData,size);
         respDataSize = size +idSize;
@@ -98,6 +98,7 @@ public:
         else return respDataSize;
     }
 
+    unsigned int getIdSize()const{return idSize;}
 private:
     const char* getDataWithId(AMsgType* src, char* dest)
     {
@@ -112,7 +113,7 @@ private:
             return src->getData();
     }
 
-    void setData(char *src, char* dest, unsigned int size)
+    void setData(const char *src, char* dest, unsigned int size)
     {
         assert(!dest);
         dest = (char*)malloc(size+idSize);
