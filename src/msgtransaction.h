@@ -66,11 +66,13 @@ public:
     void setReq(char *value, unsigned int size)
     {
         setData(value,reqData,size);
+        reqDataSize = size +idSize;
     }
 
     void setResp(char *value, unsigned int size)
     {
         setData(value,respData,size);
+        respDataSize = size +idSize;
     }
 
     AMsgType *getReq() const
@@ -81,6 +83,19 @@ public:
     AMsgType *getResp() const
     {
         return resp;
+    }
+
+    unsigned int getReqSize()
+    {
+        if(req)
+            return sizeof(*req);
+        else return reqDataSize;
+    }
+    unsigned int getRespSize()
+    {
+        if(resp)
+            return sizeof(*resp);
+        else return respDataSize;
     }
 
 private:
@@ -112,6 +127,8 @@ private:
     unsigned int idSize = 0;
     char* respData;
     char* reqData;
+    unsigned int respDataSize = 0;
+    unsigned int reqDataSize = 0;
 };
 
 
