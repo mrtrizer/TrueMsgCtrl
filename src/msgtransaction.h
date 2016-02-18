@@ -10,8 +10,8 @@ class MsgTransaction
 {
 public:
     MsgTransaction(char* id = nullptr, unsigned int idSize = 0):
-        idSize(idSize),
-        id(nullptr)
+        id(nullptr),
+        idSize(idSize)
     {
         setId(id);
     }
@@ -66,13 +66,13 @@ public:
     void setResp(AMsgType *value){resp = value;}
     void setReq(const char *value, unsigned int size)
     {
-        setData(value,reqData,size);
+        reqData = setData(value,size);
         reqDataSize = size +idSize;
     }
 
     void setResp(const char *value, unsigned int size)
     {
-        setData(value,respData,size);
+        respData = setData(value,size);
         respDataSize = size +idSize;
     }
 
@@ -106,11 +106,11 @@ public:
 
     unsigned int getIdSize()const{return idSize;}
 private:
-    const char* getDataWithId(AMsgType* src, char* dest)
+    const char* getDataWithId(AMsgType* src, char*& dest)
     {
         if(idSize)
         {
-            dest = (char*)realloc(dest,src->getSize()+idSize);
+            dest = (char*)malloc(src->getSize()+idSize);
             memcpy(dest,id,idSize);
             memcpy(dest+idSize,src->getData(),src->getSize());
             return dest;
@@ -119,17 +119,17 @@ private:
             return src->getData();
     }
 
-    void setData(const char *src, char* dest, unsigned int size)
+    char* setData(const char *src, unsigned int size)
     {
-        assert(!dest);
-        dest = (char*)malloc(size+idSize);
-        memcpy(dest,id,idSize);
-        memcpy(dest+idSize,src,size);
+        char* res = (char*)malloc(size+idSize);
+        memcpy(res,id,idSize);
+        memcpy(res+idSize,src,size);
+        return res;
     }
 
 
-    AMsgType* req;
-    AMsgType* resp;
+    AMsgType* req = nullptr;
+    AMsgType* resp = nullptr;
     char* id = nullptr;
     unsigned int idSize = 0;
     char* respData = nullptr;
