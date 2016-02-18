@@ -10,7 +10,8 @@ class MsgTransaction
 {
 public:
     MsgTransaction(char* id = nullptr, unsigned int idSize = 0):
-        idSize(idSize)
+        idSize(idSize),
+        id(nullptr)
     {
         setId(id);
     }
@@ -98,6 +99,11 @@ public:
         else return respDataSize;
     }
 
+    void setIdSize(unsigned int size)
+    {
+        idSize = size;
+    }
+
     unsigned int getIdSize()const{return idSize;}
 private:
     const char* getDataWithId(AMsgType* src, char* dest)
@@ -124,10 +130,10 @@ private:
 
     AMsgType* req;
     AMsgType* resp;
-    char* id;
+    char* id = nullptr;
     unsigned int idSize = 0;
-    char* respData;
-    char* reqData;
+    char* respData = nullptr;
+    char* reqData = nullptr;
     unsigned int respDataSize = 0;
     unsigned int reqDataSize = 0;
 };
