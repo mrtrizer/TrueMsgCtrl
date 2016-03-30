@@ -2,17 +2,45 @@
 #define MSGTEMPLATES_H
 
 #include <inttypes.h>
+#include <cstring>
+#include <algorithm>
+
+class AMsgType
+{
+public:
+    AMsgType(){}
+    virtual ~AMsgType(){}
+    virtual char* getData() = 0;
+    virtual unsigned int getSize() const= 0;
+};
 
 ///New MsgType class
 template <class T, int MSG_TYPE>
-class __attribute__((packed)) MsgType {
+class __attribute__((packed)) MsgType : public AMsgType {
 public:
     MsgType(const T & data):type(MSG_TYPE),data(data){}
     MsgType():type(MSG_TYPE){}
+    ~MsgType()
+    {
+        if(dataBuf)
+            free(dataBuf);
+    }
+
     int type;
     T data;
-    char * getData(){return (char *)this;}
-    static unsigned int getSize(){return sizeof(MsgType<T,MSG_TYPE>);}
+    char* dataBuf = nullptr;
+    char * getData()
+    {
+        if(!dataBuf)
+        {
+            dataBuf =(char*) malloc(sizeof(type)+sizeof(T));
+            memcpy(dataBuf,&type,sizeof(type));
+            memcpy(dataBuf+sizeof(type),&data,sizeof(T));
+        }
+        return dataBuf;
+    }
+    virtual unsigned int getSize() const override{return getSizeS();}
+    static unsigned int getSizeS(){return sizeof(MsgType<T,MSG_TYPE>);}
     static inline unsigned char getCode(){return MSG_TYPE;}
 };
 #define MSG_TYPE(msg_name,number,data) \
